@@ -1,0 +1,105 @@
+{
+  "pack_id": "osint",
+  "pack_name": "OSINT",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#c084fc",
+  "icon": "spy",
+  "pack_tags": [
+    "OSINT"
+  ],
+  "description": "Open-source intelligence gathering for domains and usernames.",
+  "dependencies": [
+    "whois",
+    "dnsutils",
+    "curl",
+    "pipx",
+    "git",
+    "go"
+  ],
+  "scripts": [
+    {
+      "id": "whois-lookup",
+      "title": "Whois",
+      "category": "OSINT",
+      "description": "Look up domain registration details. Enter a bare domain such as example.com, not a full URL.",
+      "template": "whois {{DOMAIN:example.com}}",
+      "tags": [
+        "whois"
+      ]
+    },
+    {
+      "id": "dig-records",
+      "title": "Dig — DNS Records",
+      "category": "OSINT",
+      "description": "Query DNS records for a domain.",
+      "template": "dig {{DOMAIN:example.com}} ANY +noall +answer",
+      "tags": [
+        "dig",
+        "dns"
+      ]
+    },
+    {
+      "id": "theharvester-run",
+      "title": "theHarvester",
+      "category": "OSINT",
+      "description": "Collect email addresses, subdomains, and hosts from public sources.",
+      "template": "theHarvester -d {{DOMAIN:example.com}} -b all",
+      "tags": [
+        "theharvester"
+      ]
+    },
+    {
+      "id": "sherlock-username",
+      "title": "Sherlock — Username Search",
+      "category": "OSINT",
+      "description": "Search hundreds of social networks for a username.",
+      "template": "sherlock {{USERNAME:johndoe}}",
+      "tags": [
+        "sherlock",
+        "username"
+      ]
+    },
+    {
+      "id": "subfinder-run",
+      "title": "Subfinder",
+      "category": "OSINT",
+      "description": "Passively enumerate subdomains.",
+      "template": "subfinder -d {{DOMAIN:example.com}} -silent",
+      "tags": [
+        "subfinder",
+        "subdomain"
+      ]
+    },
+    {
+      "id": "amass-enum",
+      "title": "Amass — Enumeration",
+      "category": "OSINT",
+      "description": "Map an organization's external attack surface, including subdomains and ASNs.",
+      "template": "amass enum -d {{DOMAIN:example.com}}",
+      "tags": [
+        "amass"
+      ]
+    },
+    {
+      "id": "shodan-search",
+      "title": "Shodan — Search",
+      "category": "OSINT",
+      "description": "Search for exposed devices and services with the Shodan API (API key required).",
+      "template": "shodan search \"{{QUERY:apache}}\"",
+      "tags": [
+        "shodan"
+      ]
+    },
+    {
+      "id": "curl-robots-txt",
+      "title": "Robots.txt",
+      "category": "OSINT",
+      "description": "Fetch robots.txt, which can reveal publicly listed paths.",
+      "template": "curl {{TARGET_URL:https://example.com}}/robots.txt",
+      "tags": [
+        "curl"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MIDINS Forge</title>
+<link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+<div id="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 40" width="28" height="28">
+        <polygon points="20,3 35,12 35,28 20,37 5,28 5,12" fill="none" stroke="#ff7a45" stroke-width="2.2"/>
+        <path d="M20 10 C15 16 15 20 18.5 24 C17 21 18 18 20 16 C22.5 19 23.5 22.5 20 26.5 C25.5 23 26.5 16.5 20 10 Z" fill="#ff7a45"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-mark">MIDINS <span class="b-forge">FORGE</span></div>
+        <div class="brand-sub">Interactive cybersecurity workspace</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="kbd-hint"><span class="kbd">Ctrl</span>+<span class="kbd">K</span> search</div>
+      <button class="btn btn-sm" id="open-ai-prompt">✦ Prompt</button>
+      <button class="btn btn-sm" id="open-legal">Legal</button>
+      <button class="icon-btn" id="open-tutorial" title="Open the getting started guide">?</button>
+    </div>
+  </div>
+
+  <div class="body-row">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <button class="search-btn" id="open-search">
+          <span>Search scripts…</span>
+          <span class="kbd">Ctrl K</span>
+        </button>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Packs <button class="link-btn" id="open-new-pack">+ New pack</button></div>
+      </div>
+      <div class="tag-filter-row" id="tag-filter-row"></div>
+      <div class="packs-list" id="packs-list"></div>
+
+      <div class="drop-zone" id="drop-zone">
+        📦 Drop a <b>.json</b> file here<br>to import a pack
+      </div>
+
+      <div class="globals-section">
+        <div class="sidebar-title">Reusable values</div>
+        <div class="globals-hint">Set once; matching script fields fill automatically.</div>
+        <div id="global-vars-list"></div>
+        <div class="globals-actions">
+          <button class="btn btn-sm" id="add-global">+ Add value</button>
+          <button class="btn btn-sm btn-accent" id="save-globals">Save values</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="playground">
+
+        <div class="playground-empty" id="playground-empty">
+          <div class="big">🛠️</div>
+          <div class="empty-title">Your command workspace</div>
+          <div style="font-size:12px;">Choose a pack, prepare its tools, then run a script.</div>
+          <div class="workspace-stats">
+            <div><strong id="pack-count">0</strong><span>packs</span></div>
+            <div><strong id="script-count">0</strong><span>scripts</span></div>
+            <div><strong>Local</strong><span>execution</span></div>
+          </div>
+          <div class="hint-actions">
+            <button class="btn btn-sm" id="empty-open-tutorial">Getting started</button>
+            <button class="btn btn-sm btn-accent" id="empty-new-pack">+ New pack</button>
+          </div>
+          <div class="empty-footnote">Tip: install only the tools you need. An OSINT pack does not require the CTF toolset.</div>
+        </div>
+
+        <div class="hidden" id="playground-content">
+          <div class="script-head">
+            <div>
+              <h1 id="script-title"></h1>
+              <span class="cat-badge" id="script-category"></span>
+              <p class="script-desc" id="script-desc"></p>
+              <div class="tags" id="script-tags"></div>
+            </div>
+            <div class="script-head-actions">
+              <button class="btn btn-sm" id="btn-edit-script" title="Edit this script">✏️ Edit</button>
+              <button class="btn btn-sm btn-danger" id="btn-delete-script" title="Delete this script">🗑</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title">Parameters</div>
+            <div class="dynamic-form" id="dynamic-form"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title">Final command</div>
+            <div class="command-preview" id="command-preview"></div>
+            <div class="actions-bar">
+              <button class="btn" id="btn-copy-raw">📋 Copy command</button>
+              <button class="btn" id="btn-copy-b64">🔐 Copy Base64</button>
+              <button class="btn" id="btn-copy-url">🔗 URL-Encode</button>
+              <button class="btn" id="btn-copy-esc">＂ Escaped quotes</button>
+              <button class="btn btn-accent" id="btn-run" style="margin-left:auto;">▶ Run in terminal</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Console -->
+      <div class="console-panel collapsed" id="console-panel">
+        <div class="console-topbar" id="console-toggle">
+          <div class="console-topbar-left">
+            <span>▍ Terminal output</span>
+            <span class="exec-status exec-idle" id="exec-status">Idle</span>
+          </div>
+          <div class="console-controls">
+            <button class="btn btn-sm" id="btn-clear-console" onclick="event.stopPropagation()">Clear</button>
+            <button class="btn btn-sm btn-danger" id="btn-stop" disabled onclick="event.stopPropagation()">■ STOP</button>
+          </div>
+        </div>
+        <div class="console-output" id="console-output"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Search modal -->
+<div class="modal-backdrop hidden" id="search-modal">
+  <div class="modal-box">
+    <input class="search-input" id="search-input" placeholder="Title, category, description, or tag…" />
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<!-- Pack create/edit modal -->
+<div class="modal-backdrop hidden" id="pack-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="pack-modal-title">New pack</h2>
+      <button class="icon-btn" data-close-modal="pack-modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Pack name</label>
+        <input type="text" id="pack-form-name" placeholder="e.g. My workflow" />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" id="pack-form-desc" placeholder="What is this pack for?" />
+      </div>
+      <div class="form-group">
+        <label>Color</label>
+        <div class="swatch-row" id="pack-form-colors"></div>
+      </div>
+      <div class="form-group">
+        <label>Icon</label>
+        <div class="emoji-grid" id="pack-form-icons"></div>
+      </div>
+      <div class="form-group">
+        <label>Pack tags (for filtering: Pentest, Blue Team…)</label>
+        <div class="tag-input-box" id="pack-form-tags-box">
+          <input type="text" id="pack-form-tags-input" placeholder="Type a tag and press Enter" />
+        </div>
+        <div class="suggested-tags" id="pack-form-tags-suggestions"></div>
+      </div>
+      <div class="form-group">
+        <label for="pack-form-dependencies">System packages to install</label>
+        <textarea id="pack-form-dependencies" class="mono" placeholder="whois, dnsutils, curl"></textarea>
+        <div class="form-hint">Comma- or newline-separated package names. Names must exist in your distribution's repositories; only this pack's packages are installed.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-close-modal="pack-modal">Cancel</button>
+      <button class="btn btn-accent" id="pack-form-submit">Create pack</button>
+    </div>
+  </div>
+</div>
+
+<!-- Script create/edit modal -->
+<div class="modal-backdrop hidden" id="script-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="script-modal-title">New script</h2>
+      <button class="icon-btn" data-close-modal="script-modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="script-form-title" placeholder="e.g. Quick port scan" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <input type="text" id="script-form-category" placeholder="e.g. Recon" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" id="script-form-desc" placeholder="Briefly describe what it does" />
+      </div>
+      <div class="form-group">
+        <label>Command / template</label>
+        <textarea class="mono" id="script-form-template" placeholder="nmap -sC -sV {{TARGET_IP}} -p {{PORTS:1-1000}}"></textarea>
+        <div class="form-hint">Use <b>{{NAME}}</b> for an input, or <b>{{NAME:default_value}}</b> to set a default. A form field is generated for each variable.</div>
+        <div class="var-live-hint" id="script-form-var-hint"></div>
+      </div>
+      <div class="form-group">
+        <label>Script tags</label>
+        <div class="tag-input-box" id="script-form-tags-box">
+          <input type="text" id="script-form-tags-input" placeholder="Type a tag and press Enter" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-close-modal="script-modal">Cancel</button>
+      <button class="btn btn-accent" id="script-form-submit">Add script</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tutorial modal -->
+<div class="modal-backdrop hidden" id="tutorial-modal">
+  <div class="modal-box tutorial-box">
+    <div class="modal-body tutorial-body" id="tutorial-content"></div>
+    <div class="tutorial-dots" id="tutorial-dots"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="tutorial-skip">Skip</button>
+      <button class="btn btn-accent" id="tutorial-next">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- Optional AI prompt builder -->
+<div class="modal-backdrop hidden" id="prompt-modal">
+  <div class="modal-box prompt-box">
+    <div class="modal-header">
+      <h2>Optional AI pack prompt</h2>
+      <button class="icon-btn" data-close-modal="prompt-modal" aria-label="Close prompt builder">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="optional-note"><strong>Optional.</strong> For people who are comfortable using AI. This tool only prepares text to copy; nothing is sent and no pack is created automatically.</p>
+      <div class="prompt-form-grid">
+        <div class="form-group">
+          <label for="prompt-pack-name">Pack name</label>
+          <input type="text" id="prompt-pack-name" placeholder="e.g. Small business OSINT" />
+        </div>
+        <div class="form-group">
+          <label for="prompt-topic">Theme</label>
+          <input type="text" id="prompt-topic" placeholder="e.g. Domain inventory and DNS hygiene" />
+        </div>
+        <div class="form-group">
+          <label for="prompt-use">Intended use</label>
+          <select id="prompt-use">
+            <option>Defensive operations</option>
+            <option>Authorized lab or CTF</option>
+            <option>Personal learning</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="prompt-platform">Platform</label>
+          <input type="text" id="prompt-platform" value="Linux" />
+        </div>
+        <div class="form-group">
+          <label for="prompt-packages">System packages</label>
+          <input type="text" id="prompt-packages" placeholder="whois, dnsutils, curl" />
+        </div>
+        <div class="form-group">
+          <label for="prompt-script-count">Number of scripts</label>
+          <input type="number" id="prompt-script-count" min="1" max="20" value="5" />
+        </div>
+      </div>
+      <div class="form-group prompt-output-group">
+        <label for="prompt-output">Prompt to copy</label>
+        <textarea class="mono prompt-output" id="prompt-output" readonly></textarea>
+      </div>
+      <p class="review-note">AI can invent flags, packages, or unsafe commands. Verify every response, the JSON, authorization, scope, and legal requirements before importing or running anything.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-close-modal="prompt-modal">Close</button>
+      <button class="btn btn-accent" id="copy-ai-prompt">Copy prompt</button>
+    </div>
+  </div>
+</div>
+
+<!-- Responsible use notice -->
+<div class="modal-backdrop hidden" id="legal-modal">
+  <div class="modal-box legal-box">
+    <div class="modal-header">
+      <h2>Responsible use notice</h2>
+      <button class="icon-btn" data-close-modal="legal-modal" aria-label="Close legal notice">✕</button>
+    </div>
+    <div class="modal-body legal-copy">
+      <p>Use MIDINS Forge only on systems you own or have explicit permission to assess. Follow applicable laws, contracts, written scope, and third-party terms.</p>
+      <p>This app can run local commands and install system packages with your account privileges, including <code>sudo</code> where available. Arch AUR helpers may build third-party PKGBUILDs; inspect those build files and all commands before confirming. Generated or imported content may be incorrect or harmful.</p>
+      <p>You are responsible for authorization, scope, package installation, and the consequences of your actions. The software is provided as-is, without warranties. To the extent permitted by applicable law, its authors and contributors disclaim liability for damages arising from its use.</p>
+      <p class="review-note">This notice is informational, does not grant permission or replace legal advice, and cannot guarantee legal protection.</p>
+      <p>Browsing remains available without accepting. Acknowledgment is required before using <b>Run in terminal</b> or <b>Install tools</b> in this browser.</p>
+      <label class="legal-check"><input type="checkbox" id="legal-ack-check" /> I understand and agree to use the app only within an authorized scope.</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-close-modal="legal-modal">Cancel</button>
+      <button class="btn btn-accent" id="legal-acknowledge" disabled>I understand</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>

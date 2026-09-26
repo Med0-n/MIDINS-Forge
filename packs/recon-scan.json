@@ -1,0 +1,104 @@
+{
+  "pack_id": "recon-scan",
+  "pack_name": "Recon & Scan Réseau",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#38bdf8",
+  "icon": "target",
+  "pack_tags": [
+    "Pentest",
+    "Red Team",
+    "Réseau"
+  ],
+  "description": "Découverte d'hôtes, scan de ports et prise d'empreinte de services.",
+  "scripts": [
+    {
+      "id": "nmap-fast-recon",
+      "title": "Nmap Fast Recon",
+      "category": "Recon",
+      "description": "Scan rapide des ports principaux avec détection de version et scripts par défaut.",
+      "template": "nmap -sC -sV -T4 {{TARGET_IP}} -p {{PORTS:1-1000}}",
+      "tags": [
+        "nmap",
+        "recon"
+      ]
+    },
+    {
+      "id": "nmap-full-tcp",
+      "title": "Nmap Full TCP",
+      "category": "Recon",
+      "description": "Scan complet des 65535 ports TCP, sortie enregistrée dans un fichier.",
+      "template": "nmap -p- -T4 -oN {{OUTPUT:scan_full.txt}} {{TARGET_IP}}",
+      "tags": [
+        "nmap",
+        "recon"
+      ]
+    },
+    {
+      "id": "nmap-udp-top",
+      "title": "Nmap UDP (top ports)",
+      "category": "Recon",
+      "description": "Scan des ports UDP les plus courants (plus lent qu'un scan TCP).",
+      "template": "nmap -sU --top-ports {{TOP:20}} {{TARGET_IP}}",
+      "tags": [
+        "nmap",
+        "udp"
+      ]
+    },
+    {
+      "id": "masscan-fast",
+      "title": "Masscan rapide",
+      "category": "Recon",
+      "description": "Scan massif et très rapide d'une plage de ports.",
+      "template": "masscan {{TARGET_IP}} -p{{PORTS:1-65535}} --rate {{RATE:1000}}",
+      "tags": [
+        "masscan",
+        "recon"
+      ]
+    },
+    {
+      "id": "rustscan-quick",
+      "title": "RustScan + Nmap",
+      "category": "Recon",
+      "description": "Scan ultra rapide puis passage automatique des ports ouverts à Nmap.",
+      "template": "rustscan -a {{TARGET_IP}} -- -sC -sV",
+      "tags": [
+        "rustscan",
+        "recon"
+      ]
+    },
+    {
+      "id": "netcat-banner",
+      "title": "Netcat — Banner Grabbing",
+      "category": "Recon",
+      "description": "Récupère la bannière d'un service pour identifier sa version.",
+      "template": "nc -nv {{TARGET_IP}} {{PORT:80}}",
+      "tags": [
+        "netcat",
+        "banner"
+      ]
+    },
+    {
+      "id": "ping-sweep",
+      "title": "Ping Sweep de sous-réseau",
+      "category": "Recon",
+      "description": "Détecte les hôtes actifs sur un sous-réseau /24.",
+      "template": "for ip in {{SUBNET:192.168.1}}.{1..254}; do ping -c 1 -W 1 $ip | grep \"bytes from\"; done",
+      "tags": [
+        "bash",
+        "sweep"
+      ]
+    },
+    {
+      "id": "arp-scan-local",
+      "title": "ARP Scan (réseau local)",
+      "category": "Recon",
+      "description": "Découvre les hôtes du réseau local via des requêtes ARP.",
+      "template": "arp-scan --interface={{INTERFACE:eth0}} --localnet",
+      "tags": [
+        "arp-scan",
+        "local"
+      ]
+    }
+  ]
+}

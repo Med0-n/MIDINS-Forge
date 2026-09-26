@@ -1,0 +1,99 @@
+{
+  "pack_id": "blueteam-detection",
+  "pack_name": "Blue Team & Détection",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#22d3ee",
+  "icon": "shield",
+  "pack_tags": [
+    "Blue Team",
+    "Forensics"
+  ],
+  "description": "Surveillance réseau, journaux d'authentification et détection d'intrusion basique.",
+  "scripts": [
+    {
+      "id": "tcpdump-filter-host",
+      "title": "Tcpdump — Filtre ciblé",
+      "category": "Détection",
+      "description": "Capture uniquement le trafic vers/depuis une IP et un port précis.",
+      "template": "tcpdump -i {{INTERFACE:eth0}} host {{TARGET_IP}} and port {{PORT:443}}",
+      "tags": [
+        "tcpdump",
+        "filter"
+      ]
+    },
+    {
+      "id": "journalctl-ssh",
+      "title": "Journalctl — Auth SSH",
+      "category": "Détection",
+      "description": "Affiche les dernières lignes de journal du service SSH.",
+      "template": "journalctl -u ssh -n {{LINES:100}} --no-pager",
+      "tags": [
+        "journalctl",
+        "ssh"
+      ]
+    },
+    {
+      "id": "grep-failed-logins",
+      "title": "Échecs d'authentification",
+      "category": "Détection",
+      "description": "Recherche les tentatives de connexion échouées dans un journal.",
+      "template": "grep \"Failed password\" {{LOGFILE:/var/log/auth.log}} | tail -n {{LINES:50}}",
+      "tags": [
+        "grep",
+        "auth"
+      ]
+    },
+    {
+      "id": "netstat-listen",
+      "title": "Ports en écoute (netstat)",
+      "category": "Détection",
+      "description": "Liste tous les processus et ports en écoute sur la machine.",
+      "template": "netstat -tulnp",
+      "tags": [
+        "netstat"
+      ]
+    },
+    {
+      "id": "last-logins",
+      "title": "Historique des connexions",
+      "category": "Détection",
+      "description": "Affiche les dernières connexions au système.",
+      "template": "last -n {{LINES:20}}",
+      "tags": [
+        "last",
+        "auth"
+      ]
+    },
+    {
+      "id": "chkrootkit-scan",
+      "title": "Chkrootkit",
+      "category": "Détection",
+      "description": "Recherche de signatures de rootkits connus sur le système.",
+      "template": "chkrootkit",
+      "tags": [
+        "chkrootkit"
+      ]
+    },
+    {
+      "id": "rkhunter-scan",
+      "title": "RKHunter",
+      "category": "Détection",
+      "description": "Audit de sécurité système à la recherche de rootkits et anomalies.",
+      "template": "rkhunter --check --sk",
+      "tags": [
+        "rkhunter"
+      ]
+    },
+    {
+      "id": "auditd-recent",
+      "title": "Auditd — Événements récents",
+      "category": "Détection",
+      "description": "Interroge les journaux d'audit système pour les événements récents.",
+      "template": "ausearch -ts recent",
+      "tags": [
+        "auditd"
+      ]
+    }
+  ]
+}

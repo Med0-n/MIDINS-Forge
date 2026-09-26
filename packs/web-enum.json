@@ -1,0 +1,103 @@
+{
+  "pack_id": "web-enum",
+  "pack_name": "Web — Énumération & Vulnérabilités",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#a78bfa",
+  "icon": "spider",
+  "pack_tags": [
+    "Pentest",
+    "Red Team"
+  ],
+  "description": "Découverte de contenus web, fingerprinting CMS et tests d'injection courants.",
+  "scripts": [
+    {
+      "id": "gobuster-dir",
+      "title": "Gobuster — Répertoires",
+      "category": "Web",
+      "description": "Brute-force de répertoires/fichiers web courants.",
+      "template": "gobuster dir -u {{TARGET_URL:http://target.local}} -w {{WORDLIST:/usr/share/wordlists/dirb/common.txt}} -x {{EXTENSIONS:php,html,txt}}",
+      "tags": [
+        "gobuster",
+        "web"
+      ]
+    },
+    {
+      "id": "ffuf-dir",
+      "title": "FFUF — Fuzzing de répertoires",
+      "category": "Web",
+      "description": "Fuzzing rapide de chemins avec filtrage sur les codes HTTP.",
+      "template": "ffuf -u {{TARGET_URL:http://target.local}}/FUZZ -w {{WORDLIST:/usr/share/wordlists/dirb/common.txt}} -mc 200,301,302",
+      "tags": [
+        "ffuf",
+        "web"
+      ]
+    },
+    {
+      "id": "nikto-scan",
+      "title": "Nikto — Scan de vulnérabilités",
+      "category": "Web",
+      "description": "Scan automatisé de vulnérabilités et mauvaises configurations web connues.",
+      "template": "nikto -h {{TARGET_URL:http://target.local}}",
+      "tags": [
+        "nikto",
+        "web"
+      ]
+    },
+    {
+      "id": "whatweb-fingerprint",
+      "title": "WhatWeb — Fingerprinting",
+      "category": "Web",
+      "description": "Identifie les technologies utilisées par un site (CMS, frameworks, serveur).",
+      "template": "whatweb {{TARGET_URL:http://target.local}}",
+      "tags": [
+        "whatweb",
+        "fingerprint"
+      ]
+    },
+    {
+      "id": "wpscan-enum",
+      "title": "WPScan — Audit WordPress",
+      "category": "Web",
+      "description": "Énumère utilisateurs, plugins et thèmes vulnérables sur un site WordPress.",
+      "template": "wpscan --url {{TARGET_URL:http://target.local}} --enumerate u,vp,vt",
+      "tags": [
+        "wpscan",
+        "wordpress"
+      ]
+    },
+    {
+      "id": "sqlmap-basic",
+      "title": "SQLMap — Test d'injection SQL",
+      "category": "Web",
+      "description": "Teste un paramètre pour une injection SQL et liste les bases de données.",
+      "template": "sqlmap -u \"{{TARGET_URL:http://target.local/page.php?id=1}}\" --batch --dbs",
+      "tags": [
+        "sqlmap",
+        "injection"
+      ]
+    },
+    {
+      "id": "curl-headers",
+      "title": "Curl — En-têtes HTTP",
+      "category": "Web",
+      "description": "Récupère uniquement les en-têtes de réponse HTTP.",
+      "template": "curl -I {{TARGET_URL:http://target.local}}",
+      "tags": [
+        "curl",
+        "headers"
+      ]
+    },
+    {
+      "id": "subdomain-ffuf",
+      "title": "FFUF — Sous-domaines",
+      "category": "Web",
+      "description": "Brute-force de sous-domaines par substitution DNS.",
+      "template": "ffuf -u https://FUZZ.{{DOMAIN:target.local}} -w {{WORDLIST:/usr/share/wordlists/subdomains.txt}} -mc 200",
+      "tags": [
+        "ffuf",
+        "subdomain"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "pack_id": "wireless",
+  "pack_name": "Wireless",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#fb7185",
+  "icon": "satellite",
+  "pack_tags": [
+    "Pentest",
+    "Wireless"
+  ],
+  "dependencies": [
+    "aircrack-ng",
+    "iw",
+    "wireless-tools",
+    "pipx",
+    "git"
+  ],
+  "description": "Audit de réseaux Wi-Fi avec la suite Aircrack-ng.",
+  "scripts": [
+    {
+      "id": "airmon-start",
+      "title": "Airmon-ng — Mode moniteur",
+      "category": "Wireless",
+      "description": "Passe une interface Wi-Fi en mode moniteur.",
+      "template": "airmon-ng start {{INTERFACE:wlan0}}",
+      "tags": [
+        "aircrack-ng",
+        "airmon"
+      ]
+    },
+    {
+      "id": "airodump-scan",
+      "title": "Airodump-ng — Scan général",
+      "category": "Wireless",
+      "description": "Liste les réseaux Wi-Fi et clients à proximité.",
+      "template": "airodump-ng {{INTERFACE:wlan0mon}}",
+      "tags": [
+        "aircrack-ng",
+        "airodump"
+      ]
+    },
+    {
+      "id": "airodump-target",
+      "title": "Airodump-ng — Cible précise",
+      "category": "Wireless",
+      "description": "Capture le trafic (dont le handshake) d'un point d'accès précis.",
+      "template": "airodump-ng -c {{CHANNEL:6}} --bssid {{BSSID}} -w {{OUTPUT:capture}} {{INTERFACE:wlan0mon}}",
+      "tags": [
+        "aircrack-ng",
+        "airodump"
+      ]
+    },
+    {
+      "id": "aireplay-deauth",
+      "title": "Aireplay-ng — Déauthentification",
+      "category": "Wireless",
+      "description": "Envoie des trames de déauthentification pour forcer une reconnexion (capture du handshake).",
+      "template": "aireplay-ng --deauth {{COUNT:10}} -a {{BSSID}} {{INTERFACE:wlan0mon}}",
+      "tags": [
+        "aircrack-ng",
+        "deauth"
+      ]
+    },
+    {
+      "id": "aircrack-crack",
+      "title": "Aircrack-ng — Cassage WPA",
+      "category": "Wireless",
+      "description": "Casse une clé WPA/WPA2 à partir d'un handshake capturé.",
+      "template": "aircrack-ng {{CAPTURE_FILE:capture.cap}} -w {{WORDLIST:/usr/share/wordlists/rockyou.txt}}",
+      "tags": [
+        "aircrack-ng"
+      ]
+    },
+    {
+      "id": "wifite-auto",
+      "title": "Wifite — Mode automatique",
+      "category": "Wireless",
+      "description": "Automatise la découverte et l'attaque de réseaux Wi-Fi à proximité.",
+      "template": "wifite --kill",
+      "tags": [
+        "wifite"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "pack_id": "sysadmin-dev",
+  "pack_name": "SysAdmin & Dev Utils",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#94a3b8",
+  "icon": "wrench",
+  "pack_tags": [
+    "SysAdmin",
+    "Dev"
+  ],
+  "description": "Commandes utilitaires du quotidien pour l'administration système et le développement.",
+  "scripts": [
+    {
+      "id": "python-http-server",
+      "title": "Serveur HTTP Python",
+      "category": "Utils",
+      "description": "Sert le répertoire courant en HTTP pour transférer des fichiers.",
+      "template": "python3 -m http.server {{PORT:8000}}",
+      "tags": [
+        "python",
+        "http"
+      ]
+    },
+    {
+      "id": "tar-compress",
+      "title": "Archive tar.gz",
+      "category": "Utils",
+      "description": "Compresse un dossier en archive tar.gz.",
+      "template": "tar -czvf {{OUTPUT:archive.tar.gz}} {{TARGET_PATH:./dossier}}",
+      "tags": [
+        "tar"
+      ]
+    },
+    {
+      "id": "rsync-copy",
+      "title": "Rsync — Copie distante",
+      "category": "Utils",
+      "description": "Synchronise un dossier local vers un hôte distant via SSH.",
+      "template": "rsync -avz {{SOURCE:./local/}} {{USERNAME}}@{{TARGET_IP}}:{{DEST:/remote/path}}",
+      "tags": [
+        "rsync"
+      ]
+    },
+    {
+      "id": "systemctl-status",
+      "title": "Statut d'un service",
+      "category": "Utils",
+      "description": "Affiche l'état détaillé d'un service systemd.",
+      "template": "systemctl status {{SERVICE:nginx}}",
+      "tags": [
+        "systemctl"
+      ]
+    },
+    {
+      "id": "git-clone-repo",
+      "title": "Git — Cloner un dépôt",
+      "category": "Dev",
+      "description": "Clone un dépôt Git dans le dossier courant.",
+      "template": "git clone {{REPO_URL}}",
+      "tags": [
+        "git"
+      ]
+    },
+    {
+      "id": "ssh-keygen-ed25519",
+      "title": "Générer une clé SSH",
+      "category": "Dev",
+      "description": "Génère une paire de clés SSH moderne (ed25519).",
+      "template": "ssh-keygen -t ed25519 -C \"{{COMMENT:mail@example.com}}\" -f {{OUTPUT:id_ed25519}}",
+      "tags": [
+        "ssh",
+        "keygen"
+      ]
+    },
+    {
+      "id": "curl-api-test",
+      "title": "Tester un endpoint API",
+      "category": "Dev",
+      "description": "Envoie une requête HTTP avec en-tête JSON vers une API.",
+      "template": "curl -X {{METHOD:GET}} {{URL:http://api.local/endpoint}} -H \"Content-Type: application/json\"",
+      "tags": [
+        "curl",
+        "api"
+      ]
+    },
+    {
+      "id": "find-large-files",
+      "title": "Trouver les gros fichiers",
+      "category": "Utils",
+      "description": "Recherche les fichiers dépassant une taille donnée.",
+      "template": "find {{PATH:/}} -type f -size +{{SIZE:100M}} 2>/dev/null",
+      "tags": [
+        "find",
+        "disk"
+      ]
+    }
+  ]
+}

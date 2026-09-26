@@ -1,0 +1,92 @@
+{
+  "pack_id": "network-pivoting",
+  "pack_name": "Réseau & Pivoting",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#34d399",
+  "icon": "globe",
+  "pack_tags": [
+    "Red Team",
+    "Réseau"
+  ],
+  "description": "Tunnels SSH, relais et pivot vers des réseaux internes.",
+  "scripts": [
+    {
+      "id": "ssh-tunnel-local",
+      "title": "SSH — Tunnel local",
+      "category": "Pivoting",
+      "description": "Redirige un port local vers un service accessible depuis un hôte rebond.",
+      "template": "ssh -L {{LOCAL_PORT:8080}}:{{TARGET_IP}}:{{TARGET_PORT:80}} {{USERNAME}}@{{JUMP_HOST}}",
+      "tags": [
+        "ssh",
+        "tunnel"
+      ]
+    },
+    {
+      "id": "ssh-dynamic-proxy",
+      "title": "SSH — Proxy SOCKS dynamique",
+      "category": "Pivoting",
+      "description": "Crée un proxy SOCKS via SSH pour router du trafic vers un réseau interne.",
+      "template": "ssh -D {{LOCAL_PORT:1080}} {{USERNAME}}@{{JUMP_HOST}}",
+      "tags": [
+        "ssh",
+        "socks"
+      ]
+    },
+    {
+      "id": "chisel-server",
+      "title": "Chisel — Serveur",
+      "category": "Pivoting",
+      "description": "Démarre un serveur Chisel en mode reverse pour accepter un tunnel entrant.",
+      "template": "chisel server -p {{PORT:8000}} --reverse",
+      "tags": [
+        "chisel",
+        "tunnel"
+      ]
+    },
+    {
+      "id": "chisel-client",
+      "title": "Chisel — Client",
+      "category": "Pivoting",
+      "description": "Établit un tunnel SOCKS reverse vers le serveur Chisel.",
+      "template": "chisel client {{SERVER_IP}}:{{PORT:8000}} R:socks",
+      "tags": [
+        "chisel",
+        "tunnel"
+      ]
+    },
+    {
+      "id": "proxychains-nmap",
+      "title": "Proxychains + Nmap",
+      "category": "Pivoting",
+      "description": "Route un scan Nmap à travers un proxy SOCKS déjà configuré.",
+      "template": "proxychains nmap -sT -Pn {{TARGET_IP}}",
+      "tags": [
+        "proxychains",
+        "nmap"
+      ]
+    },
+    {
+      "id": "tcpdump-capture",
+      "title": "Tcpdump — Capture générale",
+      "category": "Réseau",
+      "description": "Capture le trafic d'une interface dans un fichier pcap.",
+      "template": "tcpdump -i {{INTERFACE:eth0}} -w {{OUTPUT:capture.pcap}}",
+      "tags": [
+        "tcpdump",
+        "capture"
+      ]
+    },
+    {
+      "id": "ss-connections",
+      "title": "Connexions actives (ss)",
+      "category": "Réseau",
+      "description": "Liste les sockets TCP/UDP en écoute et connectés.",
+      "template": "ss -tulnp",
+      "tags": [
+        "ss",
+        "network"
+      ]
+    }
+  ]
+}

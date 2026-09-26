@@ -1,0 +1,97 @@
+{
+  "pack_id": "ctf-stego",
+  "pack_name": "CTF & Stéganographie",
+  "author": "MIDINS Forge",
+  "version": "1.0",
+  "color": "#f59e0b",
+  "icon": "flag",
+  "pack_tags": [
+    "CTF"
+  ],
+  "description": "Extraction de données cachées et préparation de fichiers pour cassage de mots de passe.",
+  "scripts": [
+    {
+      "id": "steghide-extract",
+      "title": "Steghide — Extraction",
+      "category": "Stéganographie",
+      "description": "Extrait des données cachées dans une image via Steghide.",
+      "template": "steghide extract -sf {{FILE:image.jpg}}",
+      "tags": [
+        "steghide"
+      ]
+    },
+    {
+      "id": "zsteg-scan",
+      "title": "Zsteg — Analyse PNG/BMP",
+      "category": "Stéganographie",
+      "description": "Détecte des données cachées dans les bits de poids faible d'une image.",
+      "template": "zsteg {{FILE:image.png}}",
+      "tags": [
+        "zsteg"
+      ]
+    },
+    {
+      "id": "binwalk-ctf",
+      "title": "Binwalk — Fichiers imbriqués",
+      "category": "Stéganographie",
+      "description": "Recherche et extrait des fichiers cachés à l'intérieur d'une image CTF.",
+      "template": "binwalk -e {{FILE:challenge.png}}",
+      "tags": [
+        "binwalk"
+      ]
+    },
+    {
+      "id": "exiftool-ctf",
+      "title": "Exiftool — Indices cachés",
+      "category": "Stéganographie",
+      "description": "Vérifie les métadonnées d'un fichier CTF (commentaires, GPS, auteur…).",
+      "template": "exiftool {{FILE:challenge.jpg}}",
+      "tags": [
+        "exiftool"
+      ]
+    },
+    {
+      "id": "zip2john-hash",
+      "title": "Zip2john",
+      "category": "Cassage",
+      "description": "Extrait le hash d'une archive ZIP protégée pour John the Ripper.",
+      "template": "zip2john {{FILE:archive.zip}} > {{OUTPUT:hash.txt}}",
+      "tags": [
+        "john",
+        "zip"
+      ]
+    },
+    {
+      "id": "ssh2john-hash",
+      "title": "SSH2john",
+      "category": "Cassage",
+      "description": "Extrait le hash d'une clé privée SSH protégée par passphrase.",
+      "template": "ssh2john {{FILE:id_rsa}} > {{OUTPUT:hash.txt}}",
+      "tags": [
+        "john",
+        "ssh"
+      ]
+    },
+    {
+      "id": "unshadow-combine",
+      "title": "Unshadow",
+      "category": "Cassage",
+      "description": "Combine passwd et shadow en un format exploitable par John.",
+      "template": "unshadow /etc/passwd {{SHADOW_FILE:/etc/shadow}} > {{OUTPUT:combined.txt}}",
+      "tags": [
+        "john",
+        "unshadow"
+      ]
+    },
+    {
+      "id": "base64-decode-cli",
+      "title": "Décoder du Base64",
+      "category": "Utils",
+      "description": "Décode rapidement une chaîne Base64 en ligne de commande.",
+      "template": "echo \"{{DATA}}\" | base64 -d",
+      "tags": [
+        "base64"
+      ]
+    }
+  ]
+}
